@@ -41,19 +41,29 @@ def app():
             print('The given option is not valid, please try again')
 
 def add_contact():
-    print('Write the data of the contact')
-    contact_name = input('Write the name of the contact:\n')
-    contact_phone = input('Add the contact\'s phone:\n')
-    contact_category = input('Add the contact\'s category:\n')
+    print('Please answer the next fields:')
 
-    contact = Contact(contact_name, contact_phone, contact_category)
-    
-    with open(f'{ FOLDER }{ contact.name }{EXTENSION}', 'w') as file:
-        file.write(f'Name: { contact.name } \n')
-        file.write(f'Phone: { contact.phone } \n')
-        file.write(f'Category: { contact.category } \n')
-    
-    print('\n The contact has been added! \n')
+    contact_name = input('Write the name of the contact:\n')
+
+    exists = os.path.isfile(f'{ FOLDER }{ contact_name }{EXTENSION}')
+
+    if not exists:
+        contact_phone = input('Add the contact\'s phone:\n')
+        contact_category = input('Add the contact\'s category:\n')
+
+        contact = Contact(contact_name, contact_phone, contact_category)
+        
+        with open(f'{ FOLDER }{ contact.name }{EXTENSION}', 'w') as file:
+            file.write(f'Name: { contact.name } \n')
+            file.write(f'Phone: { contact.phone } \n')
+            file.write(f'Category: { contact.category } \n')
+        
+        print('\n The contact has been added! \n')
+    else:
+        print('That contact already exists')
+
+    # Restart app
+    app()
 
 
 def show_menu():
