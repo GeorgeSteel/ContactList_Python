@@ -32,7 +32,7 @@ def app():
             show_contacts()
             ask = False
         elif option == 4:
-            print('Search contact')
+            search_contact()
             ask = False
         elif option == 5:
             print('Delete contact')
@@ -111,8 +111,24 @@ def show_contacts():
             for line in contact:
                 print(line.rstrip())
             print('\n')
+    
+    app()
             
+def search_contact():
+    name = input('Select the contact that you want to search: \n')
 
+    try:
+        with open(f'{ FOLDER }{ name }{ EXTENSION }') as contact:
+            print('\n Contact Information \n')
+
+            for line in contact:
+                print(line.rstrip())
+            print('\n')
+    except IOError:
+        print('The contact doesn\'t exists')
+        print(IOError)
+    finally:
+        app()
 
 def create_directory():
     if not os.path.exists(FOLDER):
