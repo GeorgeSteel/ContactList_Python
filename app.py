@@ -29,7 +29,7 @@ def app():
             edit_contact()
             ask = False
         elif option == 3:
-            print('Show contacts')
+            show_contacts()
             ask = False
         elif option == 4:
             print('Search contact')
@@ -92,13 +92,27 @@ def edit_contact():
     
     app()
 
-def show_menu():
     print('1) Add new contact')
+
+def show_menu():
     print('2) Edit contact')
     print('3) Show contacts')
     print('4) Search contact')
     print('5) Delete contact')
     print('6) EXIT')
+
+def show_contacts():
+    files = os.listdir(FOLDER)
+    
+    files_txt = [i for i in files if i.endswith(EXTENSION)]
+
+    for file in files_txt:
+        with open(f'{ FOLDER }{ file }') as contact:
+            for line in contact:
+                print(line.rstrip())
+            print('\n')
+            
+
 
 def create_directory():
     if not os.path.exists(FOLDER):
