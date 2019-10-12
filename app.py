@@ -26,7 +26,7 @@ def app():
             add_contact()
             ask = False
         elif option == 2:
-            print('Edit contact')
+            edit_contact()
             ask = False
         elif option == 3:
             print('Show contacts')
@@ -37,6 +37,8 @@ def app():
         elif option == 5:
             print('Delete contact')
             ask = False
+        elif option == 6:
+            ask = False
         else:
             print('The given option is not valid, please try again')
 
@@ -45,7 +47,7 @@ def add_contact():
 
     contact_name = input('Write the name of the contact:\n')
 
-    exists = os.path.isfile(f'{ FOLDER }{ contact_name }{EXTENSION}')
+    exists = contact_exists(contact_name)
 
     if not exists:
         contact_phone = input('Add the contact\'s phone:\n')
@@ -65,6 +67,30 @@ def add_contact():
     # Restart app
     app()
 
+def edit_contact():
+    print('Write the contact\'s name to edit it')
+    previous_name = input('Name: \n')
+
+    exists = contact_exists(previous_name)
+
+    if exists:
+        contact_name = input('Write the new name:\n')
+        contact_phone = input('Add the new phone:\n')
+        contact_category = input('Add the new category:\n')
+
+        contact = Contact(contact_name, contact_phone, contact_category)
+
+        with open(f'{ FOLDER }{ previous_name }{ EXTENSION }', 'w') as file:
+            file.write(f'Name: { contact.name } \n')
+            file.write(f'Phone: { contact.phone } \n')
+            file.write(f'Category: { contact.category } \n')
+
+            os.rename(f'{ FOLDER }{ previous_name }{ EXTENSION }', f'{ FOLDER }{ contact.name }{ EXTENSION }')
+
+    else:
+        print('The given contact doesn\'t exists')
+    
+    app()
 
 def show_menu():
     print('1) Add new contact')
@@ -72,11 +98,14 @@ def show_menu():
     print('3) Show contacts')
     print('4) Search contact')
     print('5) Delete contact')
+    print('6) EXIT')
 
 def create_directory():
     if not os.path.exists(FOLDER):
         # Create folder
         os.makedirs(FOLDER)
 
+def contact_exists(name):
+    return os.path.isfile(f'{ FOLDER }{ name }{ EXTENSION }')
 
 app()
