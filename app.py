@@ -35,12 +35,12 @@ def app():
             search_contact()
             ask = False
         elif option == 5:
-            print('Delete contact')
+            delete_contact()
             ask = False
         elif option == 6:
             ask = False
         else:
-            print('The given option is not valid, please try again')
+            print('\nThe given option is not valid, please try again\n')
 
 def add_contact():
     print('Please answer the next fields:')
@@ -62,7 +62,7 @@ def add_contact():
         
         print('\n The contact has been added! \n')
     else:
-        print('That contact already exists')
+        print('\nThat contact already exists\n')
 
     # Restart app
     app()
@@ -88,11 +88,9 @@ def edit_contact():
             os.rename(f'{ FOLDER }{ previous_name }{ EXTENSION }', f'{ FOLDER }{ contact.name }{ EXTENSION }')
 
     else:
-        print('The given contact doesn\'t exists')
+        print('\nThe given contact doesn\'t exists\n')
     
     app()
-
-    print('1) Add new contact')
 
 def show_menu():
     print('2) Edit contact')
@@ -125,8 +123,19 @@ def search_contact():
                 print(line.rstrip())
             print('\n')
     except IOError:
-        print('The contact doesn\'t exists')
+        print('\nThe contact doesn\'t exists\n')
         print(IOError)
+    finally:
+        app()
+
+def delete_contact():
+    name = input('Select the contact that you want to delete: \n')
+    
+    try:
+        os.remove(f'{ FOLDER }{ name }{ EXTENSION }')
+        print('\nContact deleted\n')
+    except IOError:
+        print('\nThat contact doesn\'t exists\n')
     finally:
         app()
 
